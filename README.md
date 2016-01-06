@@ -10,7 +10,7 @@ You can give it to your client which will invoke your api,please remember secret
 
 
 Now,You have a secure web api.
-Server will verify every request before perform it.It the request is wrong ,server will return unauthorized msg to client.
+Server will verify every request before perform it.If the request is wrong ,server will return unauthorized msg to client.
 
 ##Screen Shot
 IIS status:

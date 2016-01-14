@@ -10,12 +10,18 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
     /// </summary>
     public class CanonicalRepresentationBuilder : IBuildMessageRepresentation
     {
+        private  const string WRONG_REPRESENTATION= "Wrong!Can't Split Authorization By Colon!";
+
         private static DateTimeFormatInfo xDateFormat;
         static CanonicalRepresentationBuilder()
         {
             xDateFormat = new DateTimeFormatInfo();
             xDateFormat.ShortDatePattern = Configuration.XDateFormat;
         }
+
+        public CanonicalRepresentationBuilder()
+        { }
+
 
         /// <summary>
         /// Builds message representation as follows:
@@ -27,7 +33,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
         /// Request URI
         /// </summary>
         /// <returns></returns>
-        public string BuildRequestRepresentation(HttpRequestMessage requestMessage)
+        public  string BuildRequestRepresentation(HttpRequestMessage requestMessage)
         {
             bool valid = IsRequestValid(requestMessage);
             if (!valid)
@@ -50,7 +56,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             }
             
             string md5 = requestMessage.Content == null ||
-                requestMessage.Content.Headers.ContentMD5 == null ?  "" 
+                requestMessage.Content.Headers.ContentMD5 == null ?  string.Empty 
                 : Convert.ToBase64String(requestMessage.Content.Headers.ContentMD5);
 
             string httpMethod = requestMessage.Method.Method;
@@ -66,22 +72,41 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             //{
             //    return null;
             //}
-            string username = requestMessage.Headers
-                .GetValues(Configuration.AppKey).First();
+            //string appKey = requestMessage.Headers
+            //    .GetValues(Configuration.AppKey).First();
+            var appKey = GetAppKey(requestMessage);
+            if (string.IsNullOrEmpty(appKey))
+            {
+                return WRONG_REPRESENTATION;
+            }
             string uri = requestMessage.RequestUri.AbsolutePath.ToLower();
             // you may need to add more headers if thats required for security reasons
             string representation = string.Join("\n", httpMethod,
                 md5,contentType, date.ToString(Configuration.XDateFormat),
-                username, uri);
+                appKey, uri);
             
             return representation;
+        }
+
+        public virtual string GetAppKey(HttpRequestMessage requestMessage)
+        {
+            var authorizationParam = requestMessage.Headers.Authorization.Parameter;
+            var originAuthParm = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authorizationParam));
+            var authSplit = originAuthParm.Split(':');
+            if (authSplit.Length != 2)
+            {
+                return string.Empty;
+            }
+            return authSplit[0];
+
         }
 
         private bool IsRequestValid(HttpRequestMessage requestMessage)
         {
             //for simplicity I am omitting headers check (all required headers should be present)
             var headers=requestMessage.Headers;
-            return headers.Contains(Configuration.AppKey) && (headers.Date.HasValue||headers.Contains(Configuration.XDateHeader));
+            //return headers.Contains(Configuration.AppKey) && (headers.Date.HasValue||headers.Contains(Configuration.XDateHeader));
+            return (headers.Date.HasValue || headers.Contains(Configuration.XDateHeader));
             //return true;
         }
     }

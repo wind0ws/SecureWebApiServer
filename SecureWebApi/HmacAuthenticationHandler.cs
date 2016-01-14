@@ -43,10 +43,11 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
 
         protected async Task<Tuple<bool,string>> IsAuthenticated(HttpRequestMessage requestMessage)
         {
-            if (!requestMessage.Headers.Contains(Configuration.AppKey))
-            {
-                return Tuple.Create(false,UnauthorizedReasons.NoAppKeyHeader);
-            }
+            //wo won't use it anymore.
+            //if (!requestMessage.Headers.Contains(Configuration.AppKey))
+            //{
+            //    return Tuple.Create(false,UnauthorizedReasons.NoAppKeyHeader);
+            //}
 
             var isDateValid = IsDateValid(requestMessage);
             if (!isDateValid.Item1)
@@ -59,7 +60,15 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             {
                 return Tuple.Create(false,UnauthorizedReasons.NoAuthorizationHeaderOrScheme);
             }
-            string appKey = requestMessage.Headers.GetValues(Configuration.AppKey).First();
+            var authorizationParam = requestMessage.Headers.Authorization.Parameter;
+            var originAuthParm = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authorizationParam));
+            var authSplit = originAuthParm.Split(':');
+            if (authSplit.Length != 2)
+            {
+                return Tuple.Create(false, UnauthorizedReasons.WrongFormatOfAuthorization);
+            }
+            var appKey = authSplit[0];
+            //string appKey = requestMessage.Headers.GetValues(Configuration.AppKey).First();
             var secret = _secretRepository.GetSecretForAppKey(appKey);
             if (secret == null)
             {
@@ -91,7 +100,8 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
                 return Tuple.Create(false,UnauthorizedReasons.ReplayAttack);
             }
 
-            var result = requestMessage.Headers.Authorization.Parameter == signature;
+            //var result = requestMessage.Headers.Authorization.Parameter == signature;
+            var result = authSplit[1] == signature;
             if (result)
             {
                 MemoryCache.Default.Add(signature, appKey,
@@ -168,9 +178,9 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
                     .CreateErrorResponse(HttpStatusCode.Unauthorized, isAuthenticated.Item2);
                 response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(
                     Configuration.AuthenticationScheme));
-                return response;
+                return response; //response of not authenticate request.
             }
-            return await base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken);// real response handle by system
         }
     }
 }

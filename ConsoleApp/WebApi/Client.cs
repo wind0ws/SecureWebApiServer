@@ -14,9 +14,9 @@ namespace ConsoleApp.WebApi
         public static void Run()
         {
             Console.WriteLine("WebApi Client Test开始.....\r\n");
-            var signingHandler = new HmacSigningHandler(new ClientSecretRepository(Constant.APP_KEY, Constant.APP_SECRET), new CanonicalRepresentationBuilder(),
+            var signingHandler = new HmacSigningHandler(new ClientSecretRepository(Constant.APP_KEY, Constant.APP_SECRET), new ClientCanonicalRepresentationBuilder(),
                                                    new HmacSignatureCalculator());
-            signingHandler.AppKey = Constant.APP_KEY;
+            //signingHandler.AppKey = Constant.APP_KEY;
 
             GetProducts(signingHandler);
            // GetProduct(signingHandler);
@@ -28,13 +28,13 @@ namespace ConsoleApp.WebApi
 
         public static void GetProducts(HmacSigningHandler signingHandler)
         {
-            Console.WriteLine("\r\n\r\nGet http://192.168.0.17:9913/api/products/");
+            Console.WriteLine("\r\n\r\nGet http://localhost:4779/api/products/");
             var getClient = new HttpClient(new RequestContentMd5Handler()
             {
                 InnerHandler = signingHandler
             });
 
-            var getResponse = getClient.GetStringAsync("http://192.168.0.17:9913/api/products");
+            var getResponse = getClient.GetStringAsync("http://localhost:4779/api/products");
             var getResult = getResponse.Result;
             Console.WriteLine("Server response: " + getResult);
         }

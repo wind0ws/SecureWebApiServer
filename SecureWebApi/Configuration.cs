@@ -2,10 +2,10 @@
 {
     public class Configuration
     {
-        /// <summary>
-        /// X-ApiAuth的AppKey Header名称
-        /// </summary>
-        public const string AppKey = "X-ApiAuth-AppKey";
+        ///// <summary>
+        ///// X-ApiAuth的AppKey Header名称
+        ///// </summary>
+        //public const string AppKey = "X-ApiAuth-AppKey";
         /// <summary>
         /// XDate Header
         /// </summary>
@@ -20,8 +20,15 @@
         /// </summary>
         public const string AuthenticationScheme = "ApiAuth";
         /// <summary>
+        /// Authentication的组成格式
+        /// </summary>
+        public const string AuthenticationFormat = "{0}:{1}";  //0 is AppKey Value, 1 is signature.
+        /// <summary>
         /// 允许服务器与客户端的时间差
         /// </summary>
         public const int ValidityPeriodInMinutes = 5;
+
+        
+
     }
 }

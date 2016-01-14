@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="ApiCredentials.cs" />
     <Compile Include="CanonicalRepresentationBuilder.cs" />
+    <Compile Include="ClientCanonicalRepresentationBuilder.cs" />
     <Compile Include="ClientSecretRepository.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DummySecretRepository.cs" />

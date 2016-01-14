@@ -17,9 +17,9 @@ namespace ConsoleApp.WebApi
 
         public static void Run()
         {
-            var signingHandler = new HmacSigningHandler(new ClientSecretRepository(Constant.APP_KEY,Constant.APP_SECRET), new CanonicalRepresentationBuilder(),
-                                                  new HmacSignatureCalculator());
-            signingHandler.AppKey = Constant.APP_KEY;
+            var signingHandler = new HmacSigningHandler(new ClientSecretRepository(Constant.APP_KEY,Constant.APP_SECRET), 
+                                                 new ClientCanonicalRepresentationBuilder(),new HmacSignatureCalculator());
+           // signingHandler.AppKey = Constant.APP_KEY;
             UploadFiles(signingHandler);
         }
 

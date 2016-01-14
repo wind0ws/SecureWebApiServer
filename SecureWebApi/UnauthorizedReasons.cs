@@ -11,6 +11,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
         private const string unthorizedRequest = "Unauthorized Request! ";
         public const string UnauthorizedMessage = unthorizedRequest;
         public const string NoAppKeyHeader = unthorizedRequest+"Misss Key";
+        public const string WrongFormatOfAuthorization = unthorizedRequest + " Format of authorization is wrong! missing colon?";
         public const string AppKeyIsNotExists = unthorizedRequest + "Invalid Consumer Key.";
         public const string NoAuthorizationHeaderOrScheme = unthorizedRequest + "We Can't Get Your Authorization From Your Request Or Your Authorization Scheme is Wrong.";
         public const string CantBuildRepresentation =unthorizedRequest+ "We Can't Build Representation From Your Request.Did you miss something?";

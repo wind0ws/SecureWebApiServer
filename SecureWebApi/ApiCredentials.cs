@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Threshold.WebApiHmacAuth.Web.Infrastructure
 {
-    public class ApiCredentials
+    /// <summary>
+    /// Abandon this.Do not use it
+    /// </summary>
+     class ApiCredentials
     {
         public string AppKey { get; set; }
         public string Signature { get; set; }
@@ -18,12 +21,13 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             {
                 return null;
             }
-            if (!requestHeaders.Contains(Configuration.AppKey))
-            {
-                return null;
-            }
+            //if (!requestHeaders.Contains(Configuration.AppKey))
+            //{
+            //    return null;
+            //}
 
-            var appKey = requestHeaders.GetValues(Configuration.AppKey).FirstOrDefault();
+            //var appKey = requestHeaders.GetValues(Configuration.AppKey).FirstOrDefault();
+            var appKey = "";//should get it from authorization header,and split by colon.
             if (appKey == null)
             {
                 return null;

@@ -10,7 +10,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
     /// </summary>
     public class CanonicalRepresentationBuilder : IBuildMessageRepresentation
     {
-        private  const string WRONG_REPRESENTATION= "Wrong!Can't Split Authorization By Colon!";
+      //  private  const string WRONG_REPRESENTATION= "Wrong!Can't Split Authorization By Colon!";
 
         private static DateTimeFormatInfo xDateFormat;
         static CanonicalRepresentationBuilder()
@@ -77,7 +77,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             var appKey = GetAppKey(requestMessage);
             if (string.IsNullOrEmpty(appKey))
             {
-                return WRONG_REPRESENTATION;
+                return UnauthorizedReasons.WrongRepresentation;
             }
             string uri = requestMessage.RequestUri.AbsolutePath.ToLower();
             // you may need to add more headers if thats required for security reasons
@@ -92,7 +92,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
         {
             var authorizationParam = requestMessage.Headers.Authorization.Parameter;
             var originAuthParm = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authorizationParam));
-            var authSplit = originAuthParm.Split(':');
+            var authSplit = originAuthParm.Split(':');//Scheme and Signature split by colon.
             if (authSplit.Length != 2)
             {
                 return string.Empty;

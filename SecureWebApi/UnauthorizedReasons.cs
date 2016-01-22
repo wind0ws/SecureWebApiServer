@@ -13,6 +13,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
         public const string NoAppKeyHeader = unthorizedRequest+"Misss Key";
         public const string WrongFormatOfAuthorization = unthorizedRequest + " Format of authorization is wrong! missing colon?";
         public const string AppKeyIsNotExists = unthorizedRequest + "Invalid Consumer Key.";
+        public const string WrongRepresentation = "Wrong!Can't Split Authorization By Colon!";
         public const string NoAuthorizationHeaderOrScheme = unthorizedRequest + "We Can't Get Your Authorization From Your Request Or Your Authorization Scheme is Wrong.";
         public const string CantBuildRepresentation =unthorizedRequest+ "We Can't Build Representation From Your Request.Did you miss something?";
         public const string RequestIsExpire = unthorizedRequest + "This Request is Expire!";

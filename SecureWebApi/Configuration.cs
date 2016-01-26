@@ -14,7 +14,7 @@
         /// XDate 时间格式
         /// .Net平台直接将Date放入Header中即可
         /// </summary>
-        public const string XDateFormat = "yyyy/MM/dd HH:mm:ss";
+        public const string XDateFormat = "r";//  "yyyy/MM/dd HH:mm:ss"
         /// <summary>
         /// 认证Scheme名称
         /// </summary>

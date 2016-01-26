@@ -52,7 +52,8 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
             else  {
                 //DateTimeFormatInfo dtFormat = new DateTimeFormatInfo();
                 //dtFormat.ShortDatePattern = "yyyy/MM/dd HH:mm:ss";
-                date = Convert.ToDateTime(requestMessage.Headers.GetValues(Configuration.XDateHeader).First(), xDateFormat);
+                // date = Convert.ToDateTime(requestMessage.Headers.GetValues(Configuration.XDateHeader).First(), xDateFormat);
+                date = Convert.ToDateTime(requestMessage.Headers.GetValues(Configuration.XDateHeader).First());
             }
             
             string md5 = requestMessage.Content == null ||

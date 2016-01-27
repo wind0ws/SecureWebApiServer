@@ -18,12 +18,56 @@ namespace ConsoleApp.WebApi
                                                    new HmacSignatureCalculator());
             //signingHandler.AppKey = Constant.APP_KEY;
 
-            GetProducts(signingHandler);
-           // GetProduct(signingHandler);
-          // AddProduct(signingHandler);
+            // GetProducts(signingHandler);
+            //GetProduct(signingHandler);
+            // AddProduct(signingHandler);
+
+            //GetSelfDefineRouteResult(signingHandler);
+            //GetOrder(signingHandler);
+            GetOrderById(signingHandler);
 
             Console.WriteLine("\r\nWebApi Client Test结束.....\r\n");
 
+        }
+
+
+        public static void GetOrderById(HmacSigningHandler signingHandler)
+        {
+            Console.WriteLine("\r\n\r\nGet http://localhost:4779/api/orders/2");
+            var getClient = new HttpClient(new RequestContentMd5Handler()
+            {
+                InnerHandler = signingHandler
+            });
+
+            var getResponse = getClient.GetStringAsync("http://localhost:4779/api/orders/2");
+            var getResult = getResponse.Result;
+            Console.WriteLine("Server response: " + getResult);
+        }
+
+        public static void GetOrder(HmacSigningHandler signingHandler)
+        {
+            Console.WriteLine("\r\n\r\nGet http://localhost:4779/api/users/1/orders/order/2");
+            var getClient = new HttpClient(new RequestContentMd5Handler()
+            {
+                InnerHandler = signingHandler
+            });
+
+            var getResponse = getClient.GetStringAsync("http://localhost:4779/api/users/1/orders/order/2");
+            var getResult = getResponse.Result;
+            Console.WriteLine("Server response: " + getResult);
+        }
+
+        public static void GetSelfDefineRouteResult(HmacSigningHandler signingHandler)
+        {
+            Console.WriteLine("\r\n\r\nGet http://localhost:4779/api/users/Admin/products");
+            var getClient = new HttpClient(new RequestContentMd5Handler()
+            {
+                InnerHandler = signingHandler
+            });
+
+            var getResponse = getClient.GetStringAsync("http://localhost:4779/api/users/Admin/products");
+            var getResult = getResponse.Result;
+            Console.WriteLine("Server response: " + getResult);
         }
 
         public static void GetProducts(HmacSigningHandler signingHandler)

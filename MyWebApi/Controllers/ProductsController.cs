@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using MyWebApi.Infrastructure.Attribute;
 using MyWebApi.Models;
 
 namespace MyWebApi.Controllers
@@ -18,9 +19,20 @@ namespace MyWebApi.Controllers
         };
 
         // GET: api/Products
+        [PrivilegeActionFilter] //this is privilege attribute ,we will verify user privilege
         public IEnumerable<Product> Get()
         {
             return products;
+        }
+
+        [Route("api/users/{user}/products")]
+        public IHttpActionResult Get(string user)
+        {
+            if (user == "Admin" || user == "Threshold")
+            {
+                return Ok(products);
+            }
+            return NotFound();
         }
 
         // GET: api/Products/5

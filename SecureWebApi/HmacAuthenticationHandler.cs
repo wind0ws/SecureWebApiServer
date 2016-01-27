@@ -93,7 +93,7 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
 
             // mLogger.Debug("Signature:"+signature);
             // FileUtil.WriteStringToFile(@"D:\Log.txt", "Signature:" + signature, false, true);
-            Log.D("Signature:" + signature);
+            Log.D("IsAuthenticated", "Signature:" + signature);
 
             if (MemoryCache.Default.Contains(signature))
             {
@@ -108,10 +108,10 @@ namespace Threshold.WebApiHmacAuth.Web.Infrastructure
                                         DateTimeOffset.UtcNow.AddMinutes(Configuration.ValidityPeriodInMinutes));
                 return Tuple.Create(true,string.Empty);
             }
-          
-
             return Tuple.Create(false, UnauthorizedReasons.WrongSignature);
         }
+
+      
 
         private async Task<bool> IsMd5Valid(HttpRequestMessage requestMessage)
         {

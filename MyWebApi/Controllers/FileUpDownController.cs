@@ -126,7 +126,7 @@ namespace MyWebApi.Controllers
         //    resp.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
         //    return resp;
         //}
-
+        
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
